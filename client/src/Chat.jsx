@@ -32,7 +32,9 @@ const POST_MESSAGE = gql`
 `;
 
 const Messages = ({ user }) => {
-  const { data } = useQuery(GET_MESSAGES);
+  const { data } = useQuery(GET_MESSAGES, {
+    pollInterval: 500,
+  });
   if (!data) {
     return null;
   }
@@ -117,7 +119,7 @@ const Chat = () => {
         <Col xs={8}>
           <FormInput
             label="Content"
-            value={state.conent}
+            value={state.content}
             onChange={(e) =>
               setState({
                 ...state,
