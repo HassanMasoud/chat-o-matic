@@ -4,6 +4,7 @@ import {
   InMemoryCache,
   ApolloProvider,
   useQuery,
+  useMutation,
   gql,
 } from "@apollo/client";
 
@@ -21,6 +22,12 @@ const GET_MESSAGES = gql`
       content
       user
     }
+  }
+`;
+
+const POST_MESSAGE = gql`
+  mutation($user: String!, $content: String!) {
+    postMessage(user: $user, content: $content)
   }
 `;
 
@@ -77,6 +84,20 @@ const Chat = () => {
     user: "Jack",
     content: "",
   });
+
+  const [postMessage] = useMutation(POST_MESSAGE);
+
+  const onSend = () => {
+    if (state.content.length > 0) {
+      postMessage({
+        variables: state,
+      });
+    }
+    setState({
+      ...state,
+      content: "",
+    });
+  };
   return (
     <Container>
       <Messages user={state.user} />
